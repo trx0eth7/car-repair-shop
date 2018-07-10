@@ -3,27 +3,33 @@ package com.trx0eth7.projects.controller.dao;
 import com.trx0eth7.projects.model.entity.IEntity;
 import org.hibernate.Session;
 
+import java.util.List;
+
 public abstract class AbstractDao<T extends IEntity> {
 
     protected AbstractDao(Session session) {
         this.session = session;
     }
 
-    private Session session;
+    protected Session session;
 
-    public boolean insert(T entity){
+    public abstract List<T> findByName(String name);
+
+    public abstract List<T> findAll();
+
+    public abstract T findById(Long id);
+
+    public boolean insert(T entity) {
         try {
             session.getTransaction().begin();
-            session.persist(entity);
+            session.save(entity);
             session.getTransaction().commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             session.getTransaction().rollback();
             return false;
         }
     }
-
-    public abstract T get(long id);
 
     public boolean update(T entity) {
         try {
@@ -31,7 +37,7 @@ public abstract class AbstractDao<T extends IEntity> {
             session.merge(entity);
             session.getTransaction().commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             session.getTransaction().rollback();
             return false;
         }
@@ -43,13 +49,13 @@ public abstract class AbstractDao<T extends IEntity> {
             session.delete(entity);
             session.getTransaction().commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             session.getTransaction().rollback();
             return false;
         }
     }
 
-    Session getSession() {
+    public Session getSession() {
         return session;
     }
 }
