@@ -5,13 +5,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HSQLDataBaseDaoTest {
+public class HSQLDataBaseDaoIntegrationTest {
 
     DataBaseDao db;
 
     @Before
     public void setUp() {
-        db = HSQLDataBaseDao.getInstance();
+        db = new HSQLDataBaseDao();
     }
 
     @Test

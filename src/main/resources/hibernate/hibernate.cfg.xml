@@ -14,5 +14,7 @@
         <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
         <property name="hibernate.hbm2ddl.auto">create</property>
         <mapping class="com.trx0eth7.projects.model.entity.Customer"/>
+        <mapping class="com.trx0eth7.projects.model.entity.Mechanic"/>
+        <mapping class="com.trx0eth7.projects.model.entity.Order"/>
     </session-factory>
 </hibernate-configuration>
