@@ -22,7 +22,7 @@ import java.util.Date;
 public class CarRepairShopUI extends UI {
 
     private WebService service;
-    private TabSheet navigationTabSheet;
+    private TabSheet navigationTabSheet = new TabSheet();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -40,7 +40,10 @@ public class CarRepairShopUI extends UI {
     }
 
     private void addNavigationTabs() {
-
+        navigationTabSheet.setSizeFull();
+        navigationTabSheet.addTab(new CustomerTabContent(), "Customers");
+        navigationTabSheet.addTab(new MechanicTabContent(), "Mechanics");
+        navigationTabSheet.addTab(new OrderTabContent(),"Orders");
     }
 
     private void generateTestData() {
