@@ -2,6 +2,11 @@
 This project is technical project for Haulmont.<br> 
 Template:  https://github.com/Haulmont/test-task 
 
+##How to start?
+Algorithm:
+1. Run in the command line:
+<code><br>mvn package<br>mvn jetty:run</code>
+2. Open url: <code>http://localhost:8080</code> any web browser 
 ## LoE
 Date         | Hours        | What is done
 ------------ | -------------| -------------
