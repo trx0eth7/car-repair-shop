@@ -2,7 +2,7 @@
 This project is technical project for Haulmont.<br> 
 Template:  https://github.com/Haulmont/test-task 
 
-##How to start?
+## How to start?
 Algorithm:
 1. Run in the command line:
 <code><br>mvn package<br>mvn jetty:run</code>
