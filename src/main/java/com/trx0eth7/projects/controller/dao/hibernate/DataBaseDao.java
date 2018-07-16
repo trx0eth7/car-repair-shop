@@ -1,9 +1,8 @@
 package com.trx0eth7.projects.controller.dao.hibernate;
 
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public interface DataBaseDao {
-    void closeSession();
-
-    Session openSession();
+    SessionFactory buildSessionFactory(Configuration cfg);
 }

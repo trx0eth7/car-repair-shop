@@ -6,6 +6,7 @@ import com.trx0eth7.projects.model.entity.Customer;
 import com.trx0eth7.projects.model.entity.Mechanic;
 import com.trx0eth7.projects.model.entity.Order;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Collections;
@@ -20,6 +21,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public Order findById(Long id) {
         Order order = null;
+        Session session = getSession();
         try {
             order = (Order) session.get(Order.class, id);
         } catch (Exception ignored) {
@@ -29,6 +31,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public List<Order> findByName(String description) {
         List<Order> orders = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             orders = session.createSQLQuery("SELECT * FROM orders WHERE orders.description = '" + description + "' ORDER BY id")
@@ -43,6 +46,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public List<Order> findAll() {
         List<Order> orders = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             orders = session.createSQLQuery("SELECT * FROM orders ORDER BY id")
@@ -57,6 +61,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public List<Order> findByStatus(OrderStatus status) {
         List<Order> orders = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             orders  = session.createCriteria(Order.class)
@@ -71,6 +76,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public List<Order> findByCustomer(Customer customer) {
         List<Order> orders = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             orders  = session.createCriteria(Order.class)
@@ -85,6 +91,7 @@ public class OrderDao extends AbstractDao<Order> {
 
     public List<Order> findByMechanic(Mechanic mechanic) {
         List<Order> orders = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             orders  = session.createCriteria(Order.class)

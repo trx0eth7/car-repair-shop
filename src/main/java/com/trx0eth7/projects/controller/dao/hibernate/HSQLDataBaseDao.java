@@ -10,20 +10,26 @@ import org.hibernate.service.ServiceRegistry;
 import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME;
 
 public final class HSQLDataBaseDao implements DataBaseDao {
-    private SessionFactory sessionFactory;
+    private static HSQLDataBaseDao instance;
     private static final String PATH_CFG = "hibernate/" + DEFAULT_CFG_RESOURCE_NAME;
 
-    public HSQLDataBaseDao() {
-        initConnections();
+    private HSQLDataBaseDao() {
     }
 
-    private void initConnections() {
+    public static HSQLDataBaseDao getInstance() {
+        if (instance == null) {
+            instance = new HSQLDataBaseDao();
+        }
+        return instance;
+    }
+
+    public SessionFactory buildSessionFactoryByDefaultConfiguration() {
         Configuration cfg = new Configuration()
                 .configure(PATH_CFG);
-        sessionFactory = buildSessionFactory(cfg);
+        return buildSessionFactory(cfg);
     }
 
-    private SessionFactory buildSessionFactory(Configuration cfg) {
+    public SessionFactory buildSessionFactory(Configuration cfg) {
         try {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(cfg.getProperties())
@@ -33,13 +39,4 @@ public final class HSQLDataBaseDao implements DataBaseDao {
             throw new ExceptionInInitializerError(ex);
         }
     }
-
-    public Session openSession() {
-        return sessionFactory.openSession();
-    }
-
-    public void closeSession() {
-        sessionFactory.close();
-    }
-
 }

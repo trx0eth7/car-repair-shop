@@ -38,6 +38,9 @@ public class Order implements IEntity {
     private OrderStatus orderStatus;
 
 
+    public Order() {
+    }
+
     public Order(String description, Customer customer, Mechanic mechanic, Date startDate, Date dueDate, String cost, OrderStatus orderStatus) {
         this.description = description;
         this.customer = customer;

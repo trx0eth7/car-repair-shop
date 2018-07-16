@@ -3,6 +3,7 @@ package com.trx0eth7.projects.controller.dao.impl;
 import com.trx0eth7.projects.controller.dao.AbstractDao;
 import com.trx0eth7.projects.model.entity.Customer;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -18,6 +19,7 @@ public class CustomerDao extends AbstractDao<Customer> {
     @Nullable
     public Customer findById(Long id) {
         Customer customer = null;
+        Session session = getSession();
         try {
             customer = (Customer) session.get(Customer.class, id);
         } catch (Exception ignored) {
@@ -27,6 +29,7 @@ public class CustomerDao extends AbstractDao<Customer> {
 
     public List<Customer> findByName(String name) {
         List<Customer> customers = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             customers = session.createSQLQuery("SELECT * FROM customers WHERE customers.firstName = '" + name + "' ORDER BY firstName")
@@ -41,6 +44,7 @@ public class CustomerDao extends AbstractDao<Customer> {
 
     public List<Customer> findAll() {
         List<Customer> customers = Collections.emptyList();
+        Session session = getSession();
         try {
             session.getTransaction().begin();
             customers = session.createSQLQuery("SELECT * FROM customers ORDER BY id")

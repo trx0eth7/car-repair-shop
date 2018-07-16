@@ -82,12 +82,7 @@ public class Customer implements IEntity {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", fatherName='" + fatherName + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return "№" + id + " " + firstName + " " + lastName;
     }
 
     @Override

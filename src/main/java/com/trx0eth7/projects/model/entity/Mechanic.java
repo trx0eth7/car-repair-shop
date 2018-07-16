@@ -81,12 +81,7 @@ public class Mechanic implements IEntity {
 
     @Override
     public String toString() {
-        return "Mechanic{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", fatherName='" + fatherName + '\'' +
-                ", hourlyPay='" + hourlyPay + '\'' +
-                '}';
+        return "№" + id + " " + firstName + " " + lastName;
     }
 
     @Override
