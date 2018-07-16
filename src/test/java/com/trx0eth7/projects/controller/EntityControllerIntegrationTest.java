@@ -1,15 +1,10 @@
 package com.trx0eth7.projects.controller;
 
-import com.trx0eth7.projects.controller.dao.hibernate.DataBaseDao;
-import com.trx0eth7.projects.controller.dao.hibernate.HSQLDataBaseDao;
-import com.trx0eth7.projects.controller.dao.impl.CustomerDao;
-import com.trx0eth7.projects.controller.dao.impl.MechanicDao;
-import com.trx0eth7.projects.controller.dao.impl.OrderDao;
 import com.trx0eth7.projects.model.OrderStatus;
 import com.trx0eth7.projects.model.entity.Customer;
 import com.trx0eth7.projects.model.entity.Mechanic;
 import com.trx0eth7.projects.model.entity.Order;
-import org.hibernate.Session;
+import com.trx0eth7.projects.view.services.WebService;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,27 +19,15 @@ import java.util.List;
 
 public class EntityControllerIntegrationTest {
 
-    DataBaseDao db;
-    EntityController controller;
+    WebService service;
 
     @Before
     public void setUp() {
-        db = new HSQLDataBaseDao();
-        Session session = db.openSession();
-        controller = new EntityController();
-
-        CustomerDao customerDao = new CustomerDao(session);
-        MechanicDao mechanicDao = new MechanicDao(session);
-        OrderDao orderDao = new OrderDao(session);
-
-        controller.setCustomerDao(customerDao);
-        controller.setMechanicDao(mechanicDao);
-        controller.setOrderDao(orderDao);
+        service = WebService.getInstance();
     }
 
     @After
     public void tearDown() {
-        db.closeSession();
     }
 
     @Test
@@ -55,24 +38,24 @@ public class EntityControllerIntegrationTest {
 
         List<Customer> expectedCustomers = Arrays.asList(customerA, customerB, customerC);
 
-        controller.addCustomer(customerA);
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerC);
+        service.controller().addCustomer(customerA);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerC);
 
-        List<Customer> actualCustomers = controller.getAllCustomers();
+        List<Customer> actualCustomers = service.controller().getAllCustomers();
         Assert.assertEquals(expectedCustomers, actualCustomers);
     }
 
     @Test
     public void shouldUpdateCustomer() {
         Customer customerA = new Customer("Alina", "Ivanova", "Valerevna", "+79270234456");
-        controller.addCustomer(customerA);
-        Assert.assertEquals("Ivanova", controller.getCustomerById(1L).getLastName());
+        service.controller().addCustomer(customerA);
+        Assert.assertEquals("Ivanova", service.controller().getCustomerById(1L).getLastName());
         customerA.setLastName("Petrova");
         customerA.setPhone("+79179797322");
-        controller.updateCustomer(customerA);
-        Assert.assertEquals("Petrova", controller.getCustomerById(1L).getLastName());
-        Assert.assertEquals("+79179797322", controller.getCustomerById(1L).getPhone());
+        service.controller().updateCustomer(customerA);
+        Assert.assertEquals("Petrova", service.controller().getCustomerById(1L).getLastName());
+        Assert.assertEquals("+79179797322", service.controller().getCustomerById(1L).getPhone());
     }
 
 
@@ -81,11 +64,11 @@ public class EntityControllerIntegrationTest {
         Customer customerA = new Customer("Petr", "Ivanov", "Ivanovich", "+79270234456");
         Customer customerB = new Customer("Vasya", "Sidorov", "Michaylovich", "+79179797322");
 
-        controller.addCustomer(customerA);
-        controller.addCustomer(customerB);
-        Assert.assertEquals(2, controller.getAllCustomers().size());
-        controller.deleteCustomer(customerB);
-        Assert.assertEquals(1, controller.getAllCustomers().size());
+        service.controller().addCustomer(customerA);
+        service.controller().addCustomer(customerB);
+        Assert.assertEquals(2, service.controller().getAllCustomers().size());
+        service.controller().deleteCustomer(customerB);
+        Assert.assertEquals(1, service.controller().getAllCustomers().size());
     }
 
     @Test
@@ -95,12 +78,12 @@ public class EntityControllerIntegrationTest {
         Customer customerC = new Customer("Vadim", "Vnukov", "Ivanovich", "+79202398637");
         Customer customerD = new Customer("Vasya", "Sidorov", "Michaylovich", "+79372393445");
 
-        controller.addCustomer(customerA);
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerC);
-        controller.addCustomer(customerD);
+        service.controller().addCustomer(customerA);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerC);
+        service.controller().addCustomer(customerD);
 
-        List<Customer> actualCustomers = controller.getCustomerByName("Vasya");
+        List<Customer> actualCustomers = service.controller().getCustomerByName("Vasya");
         Assert.assertEquals(3, actualCustomers.size());
     }
 
@@ -113,22 +96,22 @@ public class EntityControllerIntegrationTest {
 
         List<Mechanic> expectedMechanics = Arrays.asList(mechanicA, mechanicB, mechanicC);
 
-        controller.addMechanic(mechanicA);
-        controller.addMechanic(mechanicB);
-        controller.addMechanic(mechanicC);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addMechanic(mechanicB);
+        service.controller().addMechanic(mechanicC);
 
-        List<Mechanic> actualMechanics = controller.getAllMechanics();
+        List<Mechanic> actualMechanics = service.controller().getAllMechanics();
         Assert.assertEquals(expectedMechanics, actualMechanics);
     }
 
     @Test
     public void shouldUpdateMechanic() {
         Mechanic mechanicA = new Mechanic("Alex", "Petrov", "Valerevich", "150R");
-        controller.addMechanic(mechanicA);
-        Assert.assertEquals("150R", controller.getMechanicById(1L).getHourlyPay());
+        service.controller().addMechanic(mechanicA);
+        Assert.assertEquals("150R", service.controller().getMechanicById(1L).getHourlyPay());
         mechanicA.setHourlyPay("170R");
-        controller.updateMechanic(mechanicA);
-        Assert.assertEquals("170R", controller.getMechanicById(1L).getHourlyPay());
+        service.controller().updateMechanic(mechanicA);
+        Assert.assertEquals("170R", service.controller().getMechanicById(1L).getHourlyPay());
     }
 
 
@@ -136,11 +119,11 @@ public class EntityControllerIntegrationTest {
     public void shouldDeleteMechanic() {
         Mechanic mechanicA = new Mechanic("Alex", "Petrov", "Valerevich", "150R");
         Mechanic mechanicB = new Mechanic("Boris", "Ivanov", "Gennadevich", "200R");
-        controller.addMechanic(mechanicA);
-        controller.addMechanic(mechanicB);
-        Assert.assertEquals(2, controller.getAllMechanics().size());
-        controller.deleteMechanic(mechanicB);
-        Assert.assertEquals(1, controller.getAllMechanics().size());
+        service.controller().addMechanic(mechanicA);
+        service.controller().addMechanic(mechanicB);
+        Assert.assertEquals(2, service.controller().getAllMechanics().size());
+        service.controller().deleteMechanic(mechanicB);
+        Assert.assertEquals(1, service.controller().getAllMechanics().size());
     }
 
     @Test
@@ -150,12 +133,12 @@ public class EntityControllerIntegrationTest {
         Mechanic mechanicC = new Mechanic("Gleb", "Sidorov", "Ivanovich", "230R");
         Mechanic mechanicD = new Mechanic("Alex", "Semenov", "Alexandrovich", "210R");
 
-        controller.addMechanic(mechanicA);
-        controller.addMechanic(mechanicB);
-        controller.addMechanic(mechanicC);
-        controller.addMechanic(mechanicD);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addMechanic(mechanicB);
+        service.controller().addMechanic(mechanicC);
+        service.controller().addMechanic(mechanicD);
 
-        List<Mechanic> actualMechanic = controller.getMechanicByName("Alex");
+        List<Mechanic> actualMechanic = service.controller().getMechanicByName("Alex");
         Assert.assertEquals(2, actualMechanic.size());
     }
 
@@ -174,13 +157,13 @@ public class EntityControllerIntegrationTest {
 
         List<Order> expectedOrders = Arrays.asList(orderA, orderB);
 
-        controller.addCustomer(customerA);
-        controller.addCustomer(customerB);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
+        service.controller().addCustomer(customerA);
+        service.controller().addCustomer(customerB);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
 
-        List<Order> actualOrders = controller.getAllOrders();
+        List<Order> actualOrders = service.controller().getAllOrders();
         Assert.assertEquals(expectedOrders, actualOrders);
     }
 
@@ -194,19 +177,19 @@ public class EntityControllerIntegrationTest {
         Date dueDate = dateFormat.parse("2018 07 11");
         Order orderA = new Order("Wheel replacement", customerA, mechanicA, startDate, dueDate, "500R", OrderStatus.PLANNED);
 
-        controller.addCustomer(customerA);
-        controller.addCustomer(customerB);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        Assert.assertEquals(orderA, controller.getOrderById(1L));
+        service.controller().addCustomer(customerA);
+        service.controller().addCustomer(customerB);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        Assert.assertEquals(orderA, service.controller().getOrderById(1L));
 
         orderA.setDescription("Wheel replacement and Replacing the headlamp");
         orderA.setCost("1200R");
         dueDate = dateFormat.parse("2018 07 12");
         orderA.setDueDate(dueDate);
-        controller.updateOrder(orderA);
-        Assert.assertEquals(orderA, controller.getOrderById(1L));
-        Assert.assertEquals("1200R", controller.getOrderById(1L).getCost());
+        service.controller().updateOrder(orderA);
+        Assert.assertEquals(orderA, service.controller().getOrderById(1L));
+        Assert.assertEquals("1200R", service.controller().getOrderById(1L).getCost());
     }
 
     @Test
@@ -222,17 +205,17 @@ public class EntityControllerIntegrationTest {
         dueDate = dateFormat.parse("2018 07 12");
         Order orderB = new Order("Replacing the headlamp", customerB, mechanicA, startDate, dueDate, "700R", OrderStatus.PLANNED);
 
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerA);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerA);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
 
-        List<Order> orders = controller.getAllOrders();
+        List<Order> orders = service.controller().getAllOrders();
         Assert.assertEquals(2, orders.size());
 
-        controller.deleteOrder(orderB);
-        orders = controller.getAllOrders();
+        service.controller().deleteOrder(orderB);
+        orders = service.controller().getAllOrders();
 
         Assert.assertEquals(1, orders.size());
         Assert.assertEquals("Wheel replacement", orders.get(0).getDescription());
@@ -253,22 +236,22 @@ public class EntityControllerIntegrationTest {
         Order orderD = new Order("Fixing the generator", customerB, mechanicA, startDate, dueDate, "1000R", OrderStatus.PLANNED);
         Order orderE = new Order("Wheel replacement", customerB, mechanicA, startDate, dueDate, "500R", OrderStatus.PLANNED);
 
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerA);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
-        controller.addOrder(orderC);
-        controller.addOrder(orderD);
-        controller.addOrder(orderE);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerA);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
+        service.controller().addOrder(orderC);
+        service.controller().addOrder(orderD);
+        service.controller().addOrder(orderE);
 
-        List<Order> orders =  controller.getOrderByDescription("Change of oil");
+        List<Order> orders =  service.controller().getOrderByDescription("Change of oil");
         Assert.assertFalse(orders.isEmpty());
         for (Order order : orders){
             Assert.assertEquals("Change of oil", order.getDescription());
         }
 
-        orders = controller.getOrderByDescription("Wheel replacement");
+        orders = service.controller().getOrderByDescription("Wheel replacement");
         Assert.assertEquals(2, orders.size());
 
         for (Order order : orders){
@@ -291,29 +274,29 @@ public class EntityControllerIntegrationTest {
         Order orderD = new Order("Fixing the generator", customerB, mechanicA, startDate, dueDate, "1000R", OrderStatus.ACCEPTED);
         Order orderE = new Order("Wheel replacement", customerB, mechanicA, startDate, dueDate, "500R", OrderStatus.COMPLETED);
 
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerA);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
-        controller.addOrder(orderC);
-        controller.addOrder(orderD);
-        controller.addOrder(orderE);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerA);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
+        service.controller().addOrder(orderC);
+        service.controller().addOrder(orderD);
+        service.controller().addOrder(orderE);
 
-        List<Order> orders =  controller.getOrderByStatus(OrderStatus.PLANNED);
+        List<Order> orders =  service.controller().getOrderByStatus(OrderStatus.PLANNED);
         Assert.assertEquals(2, orders.size());
         for (Order order : orders){
             Assert.assertEquals(OrderStatus.PLANNED, order.getOrderStatus());
         }
 
-        orders = controller.getOrderByStatus(OrderStatus.COMPLETED);
+        orders = service.controller().getOrderByStatus(OrderStatus.COMPLETED);
         Assert.assertEquals(2, orders.size());
         for (Order order : orders){
             Assert.assertEquals(OrderStatus.COMPLETED, order.getOrderStatus());
         }
 
 
-        orders =  controller.getOrderByStatus(OrderStatus.ACCEPTED);
+        orders =  service.controller().getOrderByStatus(OrderStatus.ACCEPTED);
         Assert.assertFalse(orders.isEmpty());
         for (Order order : orders){
             Assert.assertEquals(OrderStatus.ACCEPTED, order.getOrderStatus());
@@ -336,19 +319,19 @@ public class EntityControllerIntegrationTest {
         Order orderD = new Order("Fixing the generator", customerB, mechanicA, startDate, dueDate, "1000R", OrderStatus.ACCEPTED);
         Order orderE = new Order("Wheel replacement", customerB, mechanicA, startDate, dueDate, "500R", OrderStatus.COMPLETED);
 
-        controller.addCustomer(customerB);
-        controller.addCustomer(customerA);
-        controller.addMechanic(mechanicA);
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
-        controller.addOrder(orderC);
-        controller.addOrder(orderD);
-        controller.addOrder(orderE);
+        service.controller().addCustomer(customerB);
+        service.controller().addCustomer(customerA);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
+        service.controller().addOrder(orderC);
+        service.controller().addOrder(orderD);
+        service.controller().addOrder(orderE);
 
-        List<Order> orders =  controller.getOrderByCustomer(customerA);
+        List<Order> orders =  service.controller().getOrderByCustomer(customerA);
         Assert.assertEquals(2, orders.size());
 
-        orders = controller.getOrderByCustomer(customerB);
+        orders = service.controller().getOrderByCustomer(customerB);
         Assert.assertEquals(3, orders.size());
     }
 
@@ -371,30 +354,30 @@ public class EntityControllerIntegrationTest {
         Order orderE = new Order("Wheel replacement", customerA, mechanicC, startDate, dueDate, "500R", OrderStatus.COMPLETED);
         Order orderF = new Order("Change of oil", customerA, mechanicA, startDate, dueDate, "500R", OrderStatus.PLANNED);
 
-        controller.addCustomer(customerA);
+        service.controller().addCustomer(customerA);
 
-        controller.addMechanic(mechanicA);
-        controller.addMechanic(mechanicB);
-        controller.addMechanic(mechanicC);
+        service.controller().addMechanic(mechanicA);
+        service.controller().addMechanic(mechanicB);
+        service.controller().addMechanic(mechanicC);
 
-        controller.addOrder(orderA);
-        controller.addOrder(orderB);
-        controller.addOrder(orderC);
-        controller.addOrder(orderD);
-        controller.addOrder(orderE);
-        controller.addOrder(orderF);
+        service.controller().addOrder(orderA);
+        service.controller().addOrder(orderB);
+        service.controller().addOrder(orderC);
+        service.controller().addOrder(orderD);
+        service.controller().addOrder(orderE);
+        service.controller().addOrder(orderF);
 
-        controller.deleteMechanic(mechanicA);
-        controller.deleteMechanic(mechanicB);
-        controller.deleteMechanic(mechanicC);
+        service.controller().deleteMechanic(mechanicA);
+        service.controller().deleteMechanic(mechanicB);
+        service.controller().deleteMechanic(mechanicC);
 
-        controller.getAllOrders();
+        service.controller().getAllOrders();
 
-        List<Order> orders =  controller.getOrderByMechanic(mechanicA);
+        List<Order> orders =  service.controller().getOrderByMechanic(mechanicA);
         Assert.assertEquals(3, orders.size());
-        orders =  controller.getOrderByMechanic(mechanicB);
+        orders =  service.controller().getOrderByMechanic(mechanicB);
         Assert.assertEquals(1, orders.size());
-        orders =  controller.getOrderByMechanic(mechanicC);
+        orders =  service.controller().getOrderByMechanic(mechanicC);
         Assert.assertEquals(2, orders.size());
     }
 }

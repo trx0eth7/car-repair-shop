@@ -7,16 +7,16 @@ import org.junit.Test;
 
 public class HSQLDataBaseDaoIntegrationTest {
 
-    DataBaseDao db;
+    HSQLDataBaseDao db;
 
     @Before
     public void setUp() {
-        db = new HSQLDataBaseDao();
+        db = HSQLDataBaseDao.getInstance();
     }
 
     @Test
     public void shouldCreateSession() {
-        Session session = db.openSession();
+        Session session = db.buildSessionFactoryByDefaultConfiguration().openSession();
         Assert.assertNotNull(session);
     }
 }
