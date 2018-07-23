@@ -1,124 +1,112 @@
 package com.trx0eth7.projects.controller;
 
-import com.trx0eth7.projects.controller.dao.hibernate.HSQLDataBaseDao;
-import com.trx0eth7.projects.controller.dao.impl.CustomerDao;
-import com.trx0eth7.projects.controller.dao.impl.MechanicDao;
-import com.trx0eth7.projects.controller.dao.impl.OrderDao;
+import com.trx0eth7.projects.controller.repositories.CustomerRepository;
+import com.trx0eth7.projects.controller.repositories.MechanicRepository;
+import com.trx0eth7.projects.controller.repositories.OrderRepository;
 import com.trx0eth7.projects.model.OrderStatus;
 import com.trx0eth7.projects.model.entity.Customer;
 import com.trx0eth7.projects.model.entity.Mechanic;
 import com.trx0eth7.projects.model.entity.Order;
-import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class EntityController implements Controller {
-
-    private CustomerDao customerDao;
-    private MechanicDao mechanicDao;
-    private OrderDao orderDao;
-    private Session session;
-
-    public Session getSession() {
-        if (session == null) {
-            session = HSQLDataBaseDao.getInstance().buildSessionFactoryByDefaultConfiguration().openSession();
-        }
-        return session;
-    }
-
-    public void setCustomerDao(CustomerDao customerDao) {
-        this.customerDao = customerDao;
-    }
-
-    public void setMechanicDao(MechanicDao mechanicDao) {
-        this.mechanicDao = mechanicDao;
-    }
-
-    public void setOrderDao(OrderDao orderDao) {
-        this.orderDao = orderDao;
-    }
+@Controller
+public class EntityController {
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private MechanicRepository mechanicRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     public void addCustomer(Customer customer) {
-        customerDao.insert(customer);
+        customerRepository.save(customer);
     }
 
     public void updateCustomer(Customer customer) {
-        customerDao.update(customer);
+        //TODO
     }
 
     public List<Customer> getAllCustomers() {
-        return customerDao.findAll();
+        List<Customer> customers = new ArrayList<>();
+        for (Customer customer : customerRepository.findAll()) {
+            customers.add(customer);
+        }
+        return customers;
     }
 
     public Customer getCustomerById(Long id) {
-        return customerDao.findById(id);
-    }
-
-    public List<Customer> getCustomerByName(String name) {
-        return customerDao.findByName(name);
+        return customerRepository.findOne(id);
     }
 
     public void deleteCustomer(Customer customer) {
-        customerDao.delete(customer);
+        customerRepository.delete(customer);
     }
 
     public void addMechanic(Mechanic mechanic) {
-        mechanicDao.insert(mechanic);
+        mechanicRepository.save(mechanic);
     }
 
     public void updateMechanic(Mechanic mechanic) {
-        mechanicDao.update(mechanic);
+        //TODO
     }
 
     public List<Mechanic> getAllMechanics() {
-        return mechanicDao.findAll();
+        List<Mechanic> mechanics = new ArrayList<>();
+        for (Mechanic mechanic : mechanicRepository.findAll()) {
+            mechanics.add(mechanic);
+        }
+        return mechanics;
     }
 
     public Mechanic getMechanicById(Long id) {
-        return mechanicDao.findById(id);
-    }
-
-    public List<Mechanic> getMechanicByName(String name) {
-        return mechanicDao.findByName(name);
+        return mechanicRepository.findOne(id);
     }
 
     public void deleteMechanic(Mechanic mechanic) {
-        mechanicDao.delete(mechanic);
+        mechanicRepository.delete(mechanic);
     }
 
     public void addOrder(Order order) {
-        orderDao.insert(order);
+        orderRepository.save(order);
     }
 
     public void updateOrder(Order order) {
-        orderDao.update(order);
+        //TODO
     }
 
     public List<Order> getAllOrders() {
-        return orderDao.findAll();
+        List<Order> orders = new ArrayList<>();
+        for (Order order : orderRepository.findAll()) {
+            orders.add(order);
+        }
+        return orders;
     }
 
     public Order getOrderById(Long id) {
-        return orderDao.findById(id);
+        return orderRepository.findOne(id);
     }
 
     public void deleteOrder(Order order) {
-        orderDao.delete(order);
+        orderRepository.delete(order);
     }
 
     public List<Order> getOrderByDescription(String description) {
-        return orderDao.findByName(description);
+        return orderRepository.findByDescriptionLike(description);
     }
 
     public List<Order> getOrderByStatus(OrderStatus status) {
-        return orderDao.findByStatus(status);
+        return orderRepository.findByOrderStatus(status);
     }
 
     public List<Order> getOrderByCustomer(Customer customer) {
-        return orderDao.findByCustomer(customer);
+        return orderRepository.findByCustomer(customer);
     }
 
     public List<Order> getOrderByMechanic(Mechanic mechanic) {
-        return orderDao.findByMechanic(mechanic);
+        return orderRepository.findByMechanic(mechanic);
     }
 }
