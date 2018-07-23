@@ -5,6 +5,10 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+/*
+ * Don't use this class, as it is used for Spring
+ */
+@Deprecated
 public abstract class AbstractDao<T extends IEntity> {
     private Session session;
 

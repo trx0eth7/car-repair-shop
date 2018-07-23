@@ -1,7 +1,6 @@
 package com.trx0eth7.projects.controller.dao.hibernate;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -9,6 +8,11 @@ import org.hibernate.service.ServiceRegistry;
 
 import static org.hibernate.boot.registry.StandardServiceRegistryBuilder.DEFAULT_CFG_RESOURCE_NAME;
 
+/*
+ * Don't use this class, as it is used for Spring
+ * See resources/applications.properties
+ */
+@Deprecated
 public final class HSQLDataBaseDao implements DataBaseDao {
     private static HSQLDataBaseDao instance;
     private static final String PATH_CFG = "hibernate/" + DEFAULT_CFG_RESOURCE_NAME;

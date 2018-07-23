@@ -12,6 +12,11 @@ import org.hibernate.criterion.Restrictions;
 import java.util.Collections;
 import java.util.List;
 
+/*
+ * Don't use this class, as it is used for Spring
+ * See {@link com.trx0eth7.projects.controller.repositories.OrderRepository}
+ */
+@Deprecated
 @SuppressWarnings("unchecked")
 public class OrderDao extends AbstractDao<Order> {
 
@@ -34,7 +39,7 @@ public class OrderDao extends AbstractDao<Order> {
         Session session = getSession();
         try {
             session.getTransaction().begin();
-            orders = session.createSQLQuery("SELECT * FROM orders WHERE orders.description = '" + description + "' ORDER BY id")
+            orders = session.createSQLQuery("SELECT * FROM orders WHERE orders.description LIKE '%" + description + "%' ORDER BY id")
                     .addEntity(Order.class)
                     .list();
             session.getTransaction().commit();

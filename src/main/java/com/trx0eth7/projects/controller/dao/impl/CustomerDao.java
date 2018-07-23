@@ -9,6 +9,11 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+/*
+ * Don't use this class, as it is used for Spring
+ * See {@link com.trx0eth7.projects.controller.repositories.CustomerRepository}
+ */
+@Deprecated
 @SuppressWarnings("unchecked")
 public class CustomerDao extends AbstractDao<Customer> {
 
