@@ -9,10 +9,13 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface OrderRepository extends CrudRepository<Order,Long> {
-    @Transactional
+@Transactional
+public interface OrderRepository extends CrudRepository<Order, Long> {
     List<Order> findByDescriptionLike(String description);
+
     List<Order> findByOrderStatus(OrderStatus orderStatus);
+
     List<Order> findByCustomer(Customer customer);
+
     List<Order> findByMechanic(Mechanic mechanic);
 }
