@@ -1,4 +1,4 @@
-package com.trx0eth7.projects.view.services;
+package com.trx0eth7.projects.view;
 
 import com.trx0eth7.projects.controller.EntityController;
 import org.springframework.beans.factory.annotation.Autowired;
