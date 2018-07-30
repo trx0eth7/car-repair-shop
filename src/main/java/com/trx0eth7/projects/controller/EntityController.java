@@ -9,12 +9,15 @@ import com.trx0eth7.projects.model.entity.Mechanic;
 import com.trx0eth7.projects.model.entity.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Controller
 public class EntityController {
+
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -27,7 +30,7 @@ public class EntityController {
     }
 
     public void updateCustomer(Customer customer) {
-        //TODO
+        customerRepository.save(customer);
     }
 
     public List<Customer> getAllCustomers() {
@@ -51,7 +54,7 @@ public class EntityController {
     }
 
     public void updateMechanic(Mechanic mechanic) {
-        //TODO
+        mechanicRepository.save(mechanic);
     }
 
     public List<Mechanic> getAllMechanics() {
@@ -75,7 +78,7 @@ public class EntityController {
     }
 
     public void updateOrder(Order order) {
-        //TODO
+        orderRepository.save(order);
     }
 
     public List<Order> getAllOrders() {
