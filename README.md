@@ -19,13 +19,15 @@ Algorithm:
 ## LoE
 Date         | Hours        | What is done
 ------------ | -------------| -------------
- 24.06.18    | 2.5          | configure maven, init project, learn Spring
- 28.06.18    | 1            | vaadin create example    
- 9.07.18     | 4            | design Dao model by using Hibernate     
- 10.07.18    | 5            | design Domain [core] logic      
- 13.07.18    | 6            | design UI    
- 14.07.18    | 4            | customization of UI and change logical operations   
+ 24.06.18    | 2.5          | Configure maven, init project, learn Spring
+ 28.06.18    | 1            | Create vaadin example    
+ 9.07.18     | 4            | Design Dao model by using Hibernate     
+ 10.07.18    | 5            | Design Domain [core] logic      
+ 13.07.18    | 6            | Design UI    
+ 14.07.18    | 4            | Customization of UI and change logical operations   
  22.07.18    | 4            | Domain was changed according to the requirements of Spring Boot   
  23.07.18    | 1            | Commit & Push    
-<b>All hours<b>|<b>27.5<b>            |      
+ 28.07.18    | 7            | UI upgrading    
+ 02.08.18    | 2            | Release 1.0.0    
+<b>All hours<b>|<b>36.5<b>  |      
   
