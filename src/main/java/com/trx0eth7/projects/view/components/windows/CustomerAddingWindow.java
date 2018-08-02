@@ -9,6 +9,7 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
@@ -16,7 +17,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @UIScope
 @SpringComponent
@@ -40,7 +40,6 @@ public class CustomerAddingWindow extends ModalPopupWindow {
     private final Logger logger = Logger.getLogger(CustomerAddingWindow.class);
     private final BeanFieldGroup binder = new BeanFieldGroup<>(Customer.class);
 
-    @Autowired
     public CustomerAddingWindow(WebService service) {
         super(service);
         addValidators();
@@ -51,10 +50,12 @@ public class CustomerAddingWindow extends ModalPopupWindow {
     private void addValidators() {
         firstName.setRequired(true);
         firstName.addValidator(new StringLengthValidator("Must be not empty"));
+        firstName.addValidator(new RegexpValidator("^[^\\d]+$", "First Name cannot contains number"));
         firstName.setNullRepresentation("");
 
         lastName.setRequired(true);
         lastName.addValidator(new StringLengthValidator("Must be not empty"));
+        lastName.addValidator(new RegexpValidator("^[^\\d]+$", "Last Name cannot contains number"));
         lastName.setNullRepresentation("");
 
         fatherName.setNullRepresentation("");
@@ -83,9 +84,9 @@ public class CustomerAddingWindow extends ModalPopupWindow {
                 showFailureNotification("Customer was not added! Try it in a few minutes...");
             }
         } else {
-            firstName.setRequiredError("First Name must be not empty");
-            lastName.setRequiredError("Last Name must be not empty");
-            phone.setRequiredError("Phone number must be not empty");
+            firstName.setRequiredError("First Name must not be empty");
+            lastName.setRequiredError("Last Name must not be empty");
+            phone.setRequiredError("Phone number must not be empty");
         }
     }
 

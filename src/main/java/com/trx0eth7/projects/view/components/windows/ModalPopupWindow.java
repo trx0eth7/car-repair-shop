@@ -31,7 +31,7 @@ public class ModalPopupWindow extends Window {
         setContent(content);
     }
 
-    public void showSuccessNotification(String caption){
+    public void showSuccessNotification(String caption) {
         Notification notification = new Notification(caption);
         notification.setDelayMsec(1000);
         notification.setPosition(Position.TOP_CENTER);
@@ -39,11 +39,19 @@ public class ModalPopupWindow extends Window {
         notification.show(getUI().getPage());
     }
 
-    public void showFailureNotification(String caption){
+    public void showFailureNotification(String caption) {
         Notification notification = new Notification(caption);
         notification.setDelayMsec(1000);
         notification.setPosition(Position.TOP_CENTER);
         notification.setStyleName(ValoTheme.NOTIFICATION_FAILURE);
+        notification.show(getUI().getPage());
+    }
+
+    public void showWarningNotification(String caption) {
+        Notification notification = new Notification(caption);
+        notification.setDelayMsec(1000);
+        notification.setPosition(Position.TOP_CENTER);
+        notification.setStyleName(ValoTheme.NOTIFICATION_WARNING);
         notification.show(getUI().getPage());
     }
 }

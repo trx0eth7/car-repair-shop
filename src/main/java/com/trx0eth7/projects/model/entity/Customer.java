@@ -1,5 +1,8 @@
 package com.trx0eth7.projects.model.entity;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +17,8 @@ public class Customer implements IEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<Order> orders = new ArrayList<>();
 
     @Column(name = "firstName")
@@ -82,7 +86,7 @@ public class Customer implements IEntity {
 
     @Override
     public String toString() {
-        return "№" + id + " " + firstName + " " + lastName;
+        return firstName + " " + lastName;
     }
 
     @Override

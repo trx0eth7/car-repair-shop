@@ -49,6 +49,12 @@ public class EntityController {
         customerRepository.delete(customer);
     }
 
+    public void deleteCustomers(List<Customer> customers) {
+        for (Customer customer : customers) {
+            deleteCustomer(customer);
+        }
+    }
+
     public void addMechanic(Mechanic mechanic) {
         mechanicRepository.save(mechanic);
     }
@@ -71,6 +77,12 @@ public class EntityController {
 
     public void deleteMechanic(Mechanic mechanic) {
         mechanicRepository.delete(mechanic);
+    }
+
+    public void deleteMechanics(List<Mechanic> mechanics) {
+        for (Mechanic mechanic : mechanics) {
+            deleteMechanic(mechanic);
+        }
     }
 
     public void addOrder(Order order) {
@@ -97,6 +109,12 @@ public class EntityController {
         orderRepository.delete(order);
     }
 
+    public void deleteOrders(List<Order> orders) {
+        for (Order order : orders) {
+            orderRepository.delete(order);
+        }
+    }
+
     public List<Order> getOrderByDescription(String description) {
         return orderRepository.findByDescriptionLike(description);
     }
@@ -105,11 +123,11 @@ public class EntityController {
         return orderRepository.findByOrderStatus(status);
     }
 
-    public List<Order> getOrderByCustomer(Customer customer) {
+    public List<Order> getOrdersByCustomer(Customer customer) {
         return orderRepository.findByCustomer(customer);
     }
 
-    public List<Order> getOrderByMechanic(Mechanic mechanic) {
+    public List<Order> getOrdersByMechanic(Mechanic mechanic) {
         return orderRepository.findByMechanic(mechanic);
     }
 }

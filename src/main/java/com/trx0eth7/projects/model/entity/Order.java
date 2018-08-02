@@ -26,13 +26,15 @@ public class Order implements IEntity {
     private Mechanic mechanic;
 
     @Column(name = "startDate")
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @Column(name = "dueDate")
+    @Temporal(TemporalType.DATE)
     private Date dueDate;
 
     @Column(name = "cost")
-    private String cost;
+    private Integer cost;
 
     @Column(name = "orderStatus")
     private OrderStatus orderStatus;
@@ -41,7 +43,7 @@ public class Order implements IEntity {
     public Order() {
     }
 
-    public Order(String description, Customer customer, Mechanic mechanic, Date startDate, Date dueDate, String cost, OrderStatus orderStatus) {
+    public Order(String description, Customer customer, Mechanic mechanic, Date startDate, Date dueDate, Integer cost, OrderStatus orderStatus) {
         this.description = description;
         this.customer = customer;
         this.mechanic = mechanic;
@@ -99,11 +101,11 @@ public class Order implements IEntity {
         this.dueDate = dueDate;
     }
 
-    public String getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 

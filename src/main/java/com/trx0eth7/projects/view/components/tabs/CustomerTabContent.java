@@ -1,35 +1,38 @@
 package com.trx0eth7.projects.view.components.tabs;
 
 import com.trx0eth7.projects.model.entity.Customer;
+import com.trx0eth7.projects.model.entity.Order;
 import com.trx0eth7.projects.view.WebService;
 import com.trx0eth7.projects.view.components.windows.CustomerAddingWindow;
 import com.trx0eth7.projects.view.components.windows.CustomerEditingWindow;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.shared.Position;
+import com.vaadin.event.SelectionEvent;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @UIScope
 @SpringComponent
 @Theme(ValoTheme.PANEL_BORDERLESS)
-public class CustomerTabContent extends Panel {
+public class CustomerTabContent extends BaseTabContent implements SelectionEvent.SelectionListener {
 
     private final WebService service;
-    private Grid customersGrid = new Grid("Customers Data");
+    private Grid customersData = new Grid("Customers Data");
     private Button addBtn = new Button("Add");
     private Button editBtn = new Button("Edit");
-    private Button removeBtn = new Button("Remove");
+    private Button deleteBtn = new Button("Delete");
+
+    private List<Customer> selectedCustomers = new ArrayList<>();
 
     @Autowired
     public CustomerTabContent(WebService service) {
         this.service = service;
-
         configureCustomersGrid();
         updateDataCustomers();
         addButtonListeners();
@@ -37,14 +40,18 @@ public class CustomerTabContent extends Panel {
     }
 
     private void configureCustomersGrid() {
-        customersGrid.setSizeFull();
-        customersGrid.setSelectionMode(Grid.SelectionMode.MULTI);
+        customersData.setSizeFull();
+        customersData.setSelectionMode(Grid.SelectionMode.MULTI);
+        customersData.addSelectionListener(this);
+        customersData.setColumns("lastName", "firstName", "fatherName", "phone");
+        //TODO if customer is edited then orders grid update
+//        customersData.addAttachListener();
     }
 
     private void addButtonListeners() {
         addBtn.addClickListener((Button.ClickListener) clickEvent -> addCustomer());
-        removeBtn.addClickListener((Button.ClickListener) clickEvent -> removeCustomers());
-        editBtn.addClickListener((Button.ClickListener) clickEvent -> openWindowEditCustomer());
+        deleteBtn.addClickListener((Button.ClickListener) clickEvent -> deleteCustomers());
+        editBtn.addClickListener((Button.ClickListener) clickEvent -> editCustomer());
     }
 
     private void addRootContent() {
@@ -52,40 +59,45 @@ public class CustomerTabContent extends Panel {
 
         CssLayout buttonsContent = new CssLayout();
         buttonsContent.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        buttonsContent.addComponents(addBtn, editBtn, removeBtn);
+        buttonsContent.addComponents(addBtn, editBtn, deleteBtn);
 
         rootContent.addComponent(buttonsContent);
         rootContent.setMargin(true);
         rootContent.setSpacing(true);
-        rootContent.addComponent(customersGrid);
+        rootContent.addComponent(customersData);
 
         setContent(rootContent);
 
     }
 
-    private void removeCustomers() {
-        Collection<Object> items = customersGrid.getSelectedRows();
-        for (Object item : items) {
-            Customer customer = (Customer) item;
-            //TODO: Система должна иметь защиту на уровне БД от удаления клиента и механика, для которых существуют заказы
-            if (service.controller().getOrderByCustomer(customer).isEmpty()) {
-                service.controller().deleteCustomer(customer);
-            } else {
-                showWarningNotification(String.format("Customer bind order"));
-            }
-        }
-        if (items.isEmpty()) {
-            showFailureNotification("Please, choose customer for edit");
+    private void deleteCustomers() {
+        if (!selectedCustomers.isEmpty()) {
+            ConfirmWindow confirmWindow = new ConfirmWindow();
+            UI.getCurrent().addWindow(confirmWindow);
+            confirmWindow.addCloseListener(closeEvent -> {
+                if (confirmWindow.isConfirm()) {
+                    for (Customer customer : selectedCustomers) {
+                        List<Order> orders = service.controller().getOrdersByCustomer(customer);
+                        if (!orders.isEmpty()) {
+                            showWarningNotification(String.format("%s %s has an unexecuted Order, you cannot delete him",
+                                    customer.getFirstName(), customer.getLastName()));
+                            return;
+                        }
+                    }
+                    service.controller().deleteCustomers(selectedCustomers);
+                    updateDataCustomers();
+                    showSuccessNotification("Customers were deleted");
+                }
+            });
         } else {
-            showSuccessNotification("Customers was removed");
-            updateDataCustomers();
+            showWarningNotification("Please, select at least one Customer");
         }
     }
 
     private void updateDataCustomers() {
         BeanItemContainer<Customer> beanItemContainer =
                 new BeanItemContainer<>(Customer.class, service.controller().getAllCustomers());
-        customersGrid.setContainerDataSource(beanItemContainer);
+        customersData.setContainerDataSource(beanItemContainer);
     }
 
     private void addCustomer() {
@@ -94,47 +106,29 @@ public class CustomerTabContent extends Panel {
         window.addCloseListener(closeEvent -> updateDataCustomers());
     }
 
-    private void openWindowEditCustomer() {
-        if (customersGrid.getSelectedRows().size() > 1) {
-            showFailureNotification("Please, choose once customer for edit");
-        } else {
-            Customer customerSelected = null;
-            for (Object item : customersGrid.getSelectedRows()) {
-                customerSelected = (Customer) item;
-            }
-
-            if (customerSelected == null) {
-                showFailureNotification("Please, choose customer for edit");
-            } else {
-                CustomerEditingWindow modalWindow = new CustomerEditingWindow(customerSelected, service);
+    private void editCustomer() {
+        if (!selectedCustomers.isEmpty()) {
+            if (selectedCustomers.size() == 1) {
+                CustomerEditingWindow modalWindow = new CustomerEditingWindow(selectedCustomers.get(0), service);
                 UI.getCurrent().addWindow(modalWindow);
-                modalWindow.addCloseListener(closeEvent -> updateDataCustomers());
+                modalWindow.addCloseListener(closeEvent -> {
+                    updateDataCustomers();
+                    selectedCustomers.clear();
+                });
+                customersData.deselectAll();
+            } else {
+                showWarningNotification("Please, select only one Customer");
             }
+        } else {
+            showWarningNotification("Please, select a Customer");
         }
     }
 
-    private void showSuccessNotification(String caption) {
-        Notification notification = new Notification(caption);
-        notification.setDelayMsec(1000);
-        notification.setPosition(Position.TOP_CENTER);
-        notification.setStyleName(ValoTheme.NOTIFICATION_SUCCESS);
-        notification.show(getUI().getPage());
+    @Override
+    public void select(SelectionEvent event) {
+        selectedCustomers.clear();
+        for (Object item : customersData.getSelectionModel().getSelectedRows()) {
+            selectedCustomers.add((Customer) item);
+        }
     }
-
-    private void showFailureNotification(String caption) {
-        Notification notification = new Notification(caption);
-        notification.setDelayMsec(1000);
-        notification.setPosition(Position.TOP_CENTER);
-        notification.setStyleName(ValoTheme.NOTIFICATION_FAILURE);
-        notification.show(getUI().getPage());
-    }
-
-    private void showWarningNotification(String caption) {
-        Notification notification = new Notification(caption);
-        notification.setDelayMsec(1000);
-        notification.setPosition(Position.TOP_CENTER);
-        notification.setStyleName(ValoTheme.NOTIFICATION_WARNING);
-        notification.show(getUI().getPage());
-    }
-
 }

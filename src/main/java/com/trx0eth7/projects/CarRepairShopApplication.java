@@ -23,7 +23,6 @@ public class CarRepairShopApplication {
         SpringApplication.run(CarRepairShopApplication.class, args);
     }
 
-    //TODO: создание таблицы через SQL-скрипт
     @Bean
     public CommandLineRunner ensureTestData(CustomerRepository customerRepository,
                                             MechanicRepository mechanicRepository,
@@ -35,9 +34,9 @@ public class CarRepairShopApplication {
             Customer customerD = new Customer("Vasya", "Sidorov", "Michaylovich", "+79372393445");
             Customer customerE = new Customer("Alina", "Pivovar", "Valerevna", "+79179790014");
 
-            Mechanic mechanicA = new Mechanic("Alex", "Petrov", "Valerevich", "150R");
-            Mechanic mechanicB = new Mechanic("Boris", "Ivanov", "Gennadevich", "200R");
-            Mechanic mechanicC = new Mechanic("Gleb", "Sidorov", "Ivanovich", "230R");
+            Mechanic mechanicA = new Mechanic("Alex", "Petrov", "Valerevich", 150);
+            Mechanic mechanicB = new Mechanic("Boris", "Ivanov", "Gennadevich", 200);
+            Mechanic mechanicC = new Mechanic("Gleb", "Sidorov", "Ivanovich", 230);
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy MM dd");
             Date startDate = null;
@@ -49,12 +48,12 @@ public class CarRepairShopApplication {
                 e.printStackTrace();
             }
 
-            Order orderA = new Order("Wheel replacement", customerA, mechanicA, startDate, dueDate, "500R", OrderStatus.PLANNED);
-            Order orderB = new Order("Replacing the headlamp", customerB, mechanicB, startDate, dueDate, "700R", OrderStatus.PLANNED);
-            Order orderC = new Order("Change of oil", customerC, mechanicC, startDate, dueDate, "200R", OrderStatus.COMPLETED);
-            Order orderD = new Order("Fixing the generator", customerD, mechanicA, startDate, dueDate, "1000R", OrderStatus.ACCEPTED);
-            Order orderE = new Order("Wheel replacement", customerB, mechanicC, startDate, dueDate, "500R", OrderStatus.COMPLETED);
-            Order orderF = new Order("Change of oil", customerC, mechanicA, startDate, dueDate, "500R", OrderStatus.PLANNED);
+            Order orderA = new Order("Wheel replacement", customerA, mechanicA, startDate, dueDate, 500, OrderStatus.PLANNED);
+            Order orderB = new Order("Replacing the headlamp", customerB, mechanicB, startDate, dueDate, 700, OrderStatus.PLANNED);
+            Order orderC = new Order("Change of oil", customerC, mechanicC, startDate, dueDate, 200, OrderStatus.COMPLETED);
+            Order orderD = new Order("Fixing the generator", customerD, mechanicA, startDate, dueDate, 1000, OrderStatus.ACCEPTED);
+            Order orderE = new Order("Wheel replacement", customerB, mechanicC, startDate, dueDate, 500, OrderStatus.COMPLETED);
+            Order orderF = new Order("Change of oil", customerC, mechanicA, startDate, dueDate, 500, OrderStatus.PLANNED);
 
             customerRepository.save(customerA);
             customerRepository.save(customerB);
