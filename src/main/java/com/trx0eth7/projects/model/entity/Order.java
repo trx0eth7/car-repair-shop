@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
-public class Order implements IEntity {
+public class Order {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

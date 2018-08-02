@@ -46,8 +46,6 @@ public class MechanicTabContent extends BaseTabContent implements SelectionEvent
         mechanicsData.setSelectionMode(Grid.SelectionMode.MULTI);
         mechanicsData.addSelectionListener(this);
         mechanicsData.setColumns("lastName", "firstName", "fatherName", "payPerHour");
-        //TODO if mechanic is edited then orders grid update
-//        mechanicsData.addAttachListener();
     }
 
     private void addButtonListeners() {

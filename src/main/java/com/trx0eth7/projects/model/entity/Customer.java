@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
-public class Customer implements IEntity {
+public class Customer {
 
     @Id
     @Column(name = "id")

@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 @SpringComponent
 @Title(CustomerEditingWindow.DEFAULT_TITLE)
 public class CustomerEditingWindow extends ModalPopupWindow {
-    public static final String DEFAULT_TITLE = "Edit Customer";
+    static final String DEFAULT_TITLE = "Edit Customer";
 
     @PropertyId("firstName")
     private TextField firstName = new TextField("First Name");

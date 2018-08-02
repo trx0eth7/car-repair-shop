@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 @SpringComponent
 @Title(OrderEditingWindow.DEFAULT_TITLE)
 public class OrderEditingWindow extends ModalPopupWindow {
-    public static final String DEFAULT_TITLE = "Edit Order";
+    static final String DEFAULT_TITLE = "Edit Order";
 
     @PropertyId("description")
     private TextArea description = new TextArea("Description");

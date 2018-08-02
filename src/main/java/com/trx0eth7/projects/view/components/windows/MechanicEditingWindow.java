@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 @SpringComponent
 @Title(MechanicEditingWindow.DEFAULT_TITLE)
 public class MechanicEditingWindow extends ModalPopupWindow {
-    public static final String DEFAULT_TITLE = "Edit Mechanic";
+    static final String DEFAULT_TITLE = "Edit Mechanic";
 
     @PropertyId("firstName")
     private TextField firstName = new TextField("First Name");

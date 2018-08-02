@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 @Title(OrderAddingWindow.DEFAULT_TITLE)
 public class OrderAddingWindow extends ModalPopupWindow {
 
-    public static final String DEFAULT_TITLE = "New Order";
+    static final String DEFAULT_TITLE = "New Order";
 
     @PropertyId("description")
     private TextArea description = new TextArea("Description");

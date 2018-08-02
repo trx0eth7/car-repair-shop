@@ -4,8 +4,8 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.validator.RegexpValidator;
 
 public class PhoneValidator implements Validator {
-    public static final String REGEXP_PHONE_RU = "^((\\+7|7|8)+([0-9]){10})$";
-    public static final String REGEXP_PHONE_US = "1?\\W*([2-9][0-8][0-9])\\W*([2-9][0-9]{2})\\W*([0-9]{4})(\\se?x?t?(\\d*))?";
+    private static final String REGEXP_PHONE_RU = "^((\\+7|7|8)+([0-9]){10})$";
+    private static final String REGEXP_PHONE_US = "1?\\W*([2-9][0-8][0-9])\\W*([2-9][0-9]{2})\\W*([0-9]{4})(\\se?x?t?(\\d*))?";
     private CountryCode countryCode;
     private String errorMessage;
 

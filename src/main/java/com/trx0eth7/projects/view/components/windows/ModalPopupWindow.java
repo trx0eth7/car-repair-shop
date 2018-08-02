@@ -9,11 +9,11 @@ import com.vaadin.ui.themes.ValoTheme;
 @SpringComponent
 public class ModalPopupWindow extends Window {
 
-    protected VerticalLayout content = new VerticalLayout();
-    protected FormLayout form = new FormLayout();
+    private VerticalLayout content = new VerticalLayout();
+    FormLayout form = new FormLayout();
     final protected WebService service;
 
-    public ModalPopupWindow(WebService service) {
+    ModalPopupWindow(WebService service) {
         this.service = service;
         requiredConfiguration();
     }

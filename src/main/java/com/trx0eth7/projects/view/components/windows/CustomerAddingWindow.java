@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 @Title(CustomerAddingWindow.DEFAULT_TITLE)
 public class CustomerAddingWindow extends ModalPopupWindow {
 
-    public static final String DEFAULT_TITLE = "New Customer";
+    static final String DEFAULT_TITLE = "New Customer";
 
     @PropertyId("firstName")
     private TextField firstName = new TextField("First Name");

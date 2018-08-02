@@ -44,8 +44,6 @@ public class CustomerTabContent extends BaseTabContent implements SelectionEvent
         customersData.setSelectionMode(Grid.SelectionMode.MULTI);
         customersData.addSelectionListener(this);
         customersData.setColumns("lastName", "firstName", "fatherName", "phone");
-        //TODO if customer is edited then orders grid update
-//        customersData.addAttachListener();
     }
 
     private void addButtonListeners() {

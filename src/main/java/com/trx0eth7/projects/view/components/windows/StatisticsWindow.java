@@ -16,7 +16,7 @@ import java.util.List;
 @Title(StatisticsWindow.DEFAULT_TITLE)
 public class StatisticsWindow extends Window {
 
-    public static final String DEFAULT_TITLE = "Statistics";
+    static final String DEFAULT_TITLE = "Statistics";
     private final List<Mechanic> mechanicsSelected;
     private TabSheet navigationTabsSheet = new TabSheet();
     private final WebService service;
