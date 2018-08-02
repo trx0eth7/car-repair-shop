@@ -37,8 +37,8 @@ public class MechanicAddingWindow extends ModalPopupWindow {
     private Button createBtn = new Button("Create");
     private Button cancelBtn = new Button("Cancel");
 
-    private final Logger logger = Logger.getLogger(CustomerAddingWindow.class);
-    private final BeanFieldGroup binder = new BeanFieldGroup<>(Customer.class);
+    private final Logger logger = Logger.getLogger(MechanicAddingWindow.class);
+    private final BeanFieldGroup binder = new BeanFieldGroup<>(Mechanic.class);
 
     public MechanicAddingWindow(WebService service) {
         super(service);

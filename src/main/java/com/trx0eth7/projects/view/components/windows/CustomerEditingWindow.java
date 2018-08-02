@@ -36,7 +36,7 @@ public class CustomerEditingWindow extends ModalPopupWindow {
     private Button saveBtn = new Button("Save");
     private Button cancelBtn = new Button("Cancel");
 
-    private final Logger logger = Logger.getLogger(Customer.class);
+    private final Logger logger = Logger.getLogger(CustomerEditingWindow.class);
     private final Customer customerSelected;
     private final BeanFieldGroup binder = new BeanFieldGroup<>(Customer.class);
 
